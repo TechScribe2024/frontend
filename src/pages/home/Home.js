@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../components/common/header/header";
 import { Link, useNavigate } from "react-router-dom";
+import front from '../../assets/front.jpg';
 
 const data = [
   {
@@ -34,12 +35,14 @@ const Home = () => {
     <div className="bg-black text-white">
       <Header />
       <div className="flex flex-col flex-grow px-10">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Create Blogs</h1>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Help Others</h1>
-        <h1 className="italic text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-orange-400 via-yellow-400 via-green-400 via-blue-500 to-purple-600 mb-6">
-          Learn
-        </h1>
-
+        <div className="min-h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${front})` }}>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Create Blogs</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Help Others</h1>
+          <h1 className="italic text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-orange-400 via-yellow-400 via-green-400 via-blue-500 to-purple-600 mb-6">
+            Learn
+          </h1>
+        </div>
         <div className="flex justify-center items-center mb-6">
           <button className="bg-white text-black p-5 rounded-lg text-xl italic font-bold">
             <Link to="/createBlog"> Start Blogging</Link>
