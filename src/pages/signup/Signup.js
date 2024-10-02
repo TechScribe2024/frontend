@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/common/header/header";
-
+import useSignup from "../../hooks/useSignup";
 const Signup = () => {
+  const { name, setName, email, setEmail, password, setPassword, callSignup } =
+    useSignup();
   return (
     <>
       <Header />
@@ -18,6 +20,8 @@ const Signup = () => {
             <input
               type="text"
               id="username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter your username"
               className="p-3 rounded-md mb-4 text-black bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
@@ -29,6 +33,8 @@ const Signup = () => {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="p-3 rounded-md mb-4 text-black bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
@@ -40,6 +46,8 @@ const Signup = () => {
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="p-3 rounded-md mb-6 text-black bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
               required

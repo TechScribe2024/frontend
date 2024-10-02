@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/common/header/header";
 const Login = () => {
+  const { email, setEmail, password, setPassword, callLogin } = useLogin();
   return (
     <>
       <Header />
@@ -17,7 +18,9 @@ const Login = () => {
             <input
               type="email"
               id="email"
+              value={email}
               placeholder="Enter your email"
+              onChange={(e) => setEmail(e.target.value)}
               className="p-3 rounded-md mb-4 text-black bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
@@ -28,7 +31,9 @@ const Login = () => {
             <input
               type="password"
               id="password"
+              value={password}
               placeholder="Enter your password"
+              onChange={(e) => setPassword(e.target.value)}
               className="p-3 rounded-md mb-6 text-black bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
@@ -36,6 +41,7 @@ const Login = () => {
             <button
               type="submit"
               className="bg-black text-white font-bold py-3 rounded-md hover:bg-gray-800 transition duration-300"
+              onClick={callLogin}
             >
               Login
             </button>
