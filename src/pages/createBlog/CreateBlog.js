@@ -1,33 +1,32 @@
-import React, {useState} from "react";
-import Header from "../../components/header";
-import { FaTimes } from 'react-icons/fa';
+import React, { useState } from "react";
+import Header from "../../components/common/header/header";
+import { FaTimes } from "react-icons/fa";
 
 const CreateBlog = () => {
-  const [imageSrc, setImageSrc] = useState(null); // State to hold the image source
+  const [imageSrc, setImageSrc] = useState(null);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0]; // Get the first selected file
+    const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageSrc(reader.result); // Set the image source to display
+        setImageSrc(reader.result);
       };
-      reader.readAsDataURL(file); // Read the file as a data URL
+      reader.readAsDataURL(file);
     }
   };
   const removeImage = () => {
-    setImageSrc(null); // Reset the image source
+    setImageSrc(null);
   };
 
+  const addImage = () => {};
   return (
     <>
       <Header />
       <div className="flex items-center justify-center min-h-screen bg-black text-white p-5">
         <form className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl">
           <label className="block mb-6">
-            <span className="block text-5xl font-bold italic mb-2">
-              Title
-            </span>
+            <span className="block text-5xl font-bold italic mb-2">Title</span>
             <input
               type="text"
               className="w-2/3 p-2 rounded bg-black text-white placeholder-gray-400"
@@ -35,15 +34,22 @@ const CreateBlog = () => {
             />
           </label>
           <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2">Content</span>
-            <textarea
-              className="w-full p-8 border border-white rounded bg-black text-white placeholder-gray-400"
-              placeholder="Enter your content here..."
-              style={{ height: '60vh', padding: '5%' }}
-            />
+            <span className="block text-xl font-bold mb-2 ">Content</span>
+            <div className="relative">
+              {/* <div className="absolute top-0 left-0 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-black">
+                <h1 className="text-xl text-white" onClick={addImage}>
+                  +
+                </h1>
+              </div> */}
+              <textarea
+                className="w-full p-8 border border-white rounded bg-black text-white placeholder-gray-400"
+                placeholder="Enter your content here..."
+                style={{ height: "60vh", padding: "5%", paddingTop: "50px" }} // Adjust padding to avoid overlap
+              />
+            </div>
           </label>
           <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2">Add Image</span> 
+            <span className="block text-xl font-bold mb-2">Add Image</span>
             <input
               type="file"
               accept="image/*"
@@ -52,9 +58,13 @@ const CreateBlog = () => {
             />
           </label>
           {imageSrc && ( // Render the image if imageSrc is not null
-            <div className="mb-6">
-              <img src={imageSrc} alt="Uploaded Preview" className="w-full h-auto rounded-md shadow-md" />
-              <button 
+            <div className="mb-6 h-[100px]">
+              <img
+                src={imageSrc}
+                alt="Uploaded Preview"
+                className="h-[100px] w-[100px]  rounded-md shadow-md"
+              />
+              <button
                 onClick={removeImage} // Call removeImage to remove the image
                 // className="absolute top-2 right-2 rounded-full p-1 hover:bg-gray-700"
               >
