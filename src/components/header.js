@@ -1,15 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import BlogHeader from "./BlogHeader";
 
 const Header = () => {
+  const location = useLocation();
   return (
     <div>
-      <div>
+      <div className="bg-black">
         <div className="p-10 text-xl">
           <header className="flex items-center justify-between">
-            <div className="bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-semibold text-5xl">
+            <div className="bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-semibold text-5xl pb-1">
               Tech Blog
             </div>
+            {location.pathname === "/createBlog" &&
+        <BlogHeader />}
             <div className="flex items-center">
               <button className="px-7 py-2 mx-3 border bg-white text-black rounded-md">
                 <Link to="/login">Login</Link>
@@ -24,5 +28,4 @@ const Header = () => {
     </div>
   );
 };
-
 export default Header;
