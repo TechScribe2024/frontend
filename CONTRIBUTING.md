@@ -12,7 +12,7 @@ Welcome to Hacktoberfest 2024! We’re excited to have you contribute to our pro
      ```bash
      git clone https://github.com/your-username/frontend.git
      ```
-   - Replace `your-username`  with your GitHub username.
+   - Replace `your-username` with your GitHub username.
 
 3. **Navigate to the Project Directory**
    - Change into the project directory:
@@ -53,8 +53,12 @@ Welcome to Hacktoberfest 2024! We’re excited to have you contribute to our pro
    - Go to the original repository and click on the "Pull Requests" tab.
    - Click the "New Pull Request" button and select your branch to create a pull request.
 
+## Raising Issues
+
+If you encounter any problems or have suggestions for improvements, please raise an issue in the [Issues section](https://github.com/hacktoberFest2024/frontend/issues). If you would like to work on an open issue, please leave a comment saying, "Please assign me this issue," and one of the maintainers will get back to you.
+
 ## Code of Conduct
-Before submitting your pull request, please review our Code of Conduct to ensure a positive and respectful community for everyone.
+Before submitting your pull request, please review our [Code of Conduct](https://github.com/hacktoberFest2024/frontend/blob/main/CODE_OF_CONDUCT.md) to ensure a positive and respectful community for everyone.
 
 ## Additional Notes
 - Make sure to follow any coding standards or guidelines specified in the repository.
