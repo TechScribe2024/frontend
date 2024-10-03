@@ -8,8 +8,7 @@ const useSignup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const callSignup = async (e) => {
-    e.preventDefault();
+  const callSignup = async () => {
     try {
       const response = await axios.post("http://localhost:8000/auth/signup", {
         name,
