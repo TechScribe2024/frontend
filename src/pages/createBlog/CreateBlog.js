@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/header";
 import { FaTimes } from "react-icons/fa";
-
+import { useSelector } from "react-redux";
 const CreateBlog = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [imageSrc, setImageSrc] = useState(null);
-
+  useEffect(() => {
+    console.log("is authenticated,", isAuthenticated);
+  });
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
