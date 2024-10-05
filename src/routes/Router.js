@@ -4,6 +4,9 @@ import Home from "../pages/home/Home";
 import CreateBlog from "../pages/createBlog/CreateBlog";
 import Signup from "../pages/signup/Signup";
 import Login from "../pages/login/Login";
+import TrendingBlogs from "../pages/trendingBlogs/TrendingBlogs";
+import { blogs } from "../pages/trendingBlogs/MockBlogs";
+import MostViewedBlogs from "../pages/mostViewedBlogs.js/MostViewedBlogs";
 const Router = () => {
   return (
     <Routes>
@@ -12,6 +15,8 @@ const Router = () => {
       <Route path="/createBlog" element={<CreateBlog />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/trendingBlogs" element={<TrendingBlogs blogs = {blogs}/>} />
+      <Route path="/mostViewedBlogs" element={<MostViewedBlogs blogs = {blogs}/>}/>
     </Routes>
   );
 };

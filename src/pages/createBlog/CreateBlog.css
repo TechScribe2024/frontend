@@ -1,0 +1,43 @@
+.editor-container .md-RichEditor-root{
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 35px 0px 0px 85px;
+    min-height: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+.editor-container .public-DraftEditor-content {
+    color: white;
+    font-size: 18px;
+}
+
+.editor-container .public-DraftEditorPlaceholder-root {
+color: #888; 
+font-style: italic;
+}
+/* .editor-container .md-editor-toolbar {
+    position: relative;
+    top: 0% !important; 
+    left: 0% !important;
+    transform: translateX(-50%); 
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+} */
+
+.editor-container .md-RichEditor-toolbar:hover {
+background-color: rgba(0, 0, 0, 0.9);
+}
+
+button {
+border: none;
+background-color: #444;
+color: white;
+font-size: 24px;
+padding: 8px 12px;
+border-radius: 50%;
+cursor: pointer;
+}

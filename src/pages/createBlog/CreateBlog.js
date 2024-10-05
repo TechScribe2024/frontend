@@ -1,30 +1,114 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "../../components/common/header/header";
-import { FaTimes } from "react-icons/fa";
+import { Editor, createEditorState } from "medium-draft";
+import { AtomicBlockUtils, EditorState, convertToRaw } from "draft-js";
+import 'medium-draft/lib/index.css';
+import "./CreateBlog.css";
+// Image block component to render images
+const ImageComponent = (props) => {
+  const { block, contentState } = props;
+  const entity = contentState.getEntity(block.getEntityAt(0));
+  const { src } = entity.getData();
+
+  return (
+    <div>
+      <img src={src} alt="Uploaded" style={{ maxWidth: '100%' }} />
+    </div>
+  );
+};
+
+// Block renderer function to handle atomic blocks
+const blockRendererFn = (block) => {
+  if (block.getType() === 'atomic') {
+    return {
+      component: ImageComponent,
+      editable: false, // Atomic blocks like images are not editable directly
+    };
+  }
+  return null;
+};
 
 const CreateBlog = () => {
-  const [imageSrc, setImageSrc] = useState(null);
+  const [editorState, setEditorState] = useState(() => createEditorState());
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  const handleImageChange = (e, getEditorState, setEditorState) => {
+    const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageSrc(reader.result);
+        const editorState = getEditorState();
+        const contentState = editorState.getCurrentContent();
+        const contentStateWithEntity = contentState.createEntity(
+          'IMAGE',
+          'IMMUTABLE',
+          { src: reader.result } // Image source is the base64 data
+        );
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+          editorState,
+          entityKey,
+          ' '
+        );
+
+        setEditorState(EditorState.forceSelection(newEditorState, newEditorState.getSelection()));
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Convert image to base64
     }
   };
-  const removeImage = () => {
-    setImageSrc(null);
+  
+  // Custom Side Button for Adding Images
+  const ImageSideButton = ({ getEditorState, setEditorState }) => {
+    let inputRef = useRef()
+
+    const onClick = () => {
+      inputRef.current.click()
+    };
+
+    const onFileChange = (e) => {
+      handleImageChange(e, getEditorState, setEditorState); // Pass get and set editor state
+    };
+
+    return (
+      <div>
+        <button
+          onClick={onClick}
+          className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+        >
+          +
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          ref={inputRef}
+          onChange={onFileChange}
+        />
+      </div>
+    );
+  };
+  
+  // Editor side buttons (including custom image button)
+  const sideButtons = [{
+    title: 'Add Image',
+    component: ImageSideButton, // Register the custom image button
+  }];
+
+  // Handle content submission (just for demonstration, you can expand this later)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const rawContent = convertToRaw(editorState.getCurrentContent());
+    console.log(rawContent); 
   };
 
-  const addImage = () => {};
   return (
     <>
       <Header />
       <div className="flex items-center justify-center min-h-screen bg-black text-white p-5">
-        <form className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl"
+        >
           <label className="block mb-6">
             <span className="block text-5xl font-bold italic mb-2">Title</span>
             <input
@@ -33,45 +117,22 @@ const CreateBlog = () => {
               placeholder="Enter your title here"
             />
           </label>
+
           <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2 ">Content</span>
+            <span className="block text-xl font-bold mb-2">Content</span>
             <div className="relative">
-              {/* <div className="absolute top-0 left-0 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-black">
-                <h1 className="text-xl text-white" onClick={addImage}>
-                  +
-                </h1>
-              </div> */}
-              <textarea
-                className="w-full p-8 border border-white rounded bg-black text-white placeholder-gray-400"
-                placeholder="Enter your content here..."
-                style={{ height: "60vh", padding: "5%", paddingTop: "50px" }} // Adjust padding to avoid overlap
-              />
+              <div className="editor-container">
+                <Editor
+                  editorState={editorState}
+                  onChange={setEditorState}
+                  placeholder="Enter your content here..."
+                  sideButtons={sideButtons}
+                  blockRendererFn={blockRendererFn}
+                />
+              </div>
             </div>
           </label>
-          <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2">Add Image</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-full text-white"
-              onChange={handleImageChange}
-            />
-          </label>
-          {imageSrc && ( // Render the image if imageSrc is not null
-            <div className="mb-6 h-[100px]">
-              <img
-                src={imageSrc}
-                alt="Uploaded Preview"
-                className="h-[100px] w-[100px]  rounded-md shadow-md"
-              />
-              <button
-                onClick={removeImage} // Call removeImage to remove the image
-                // className="absolute top-2 right-2 rounded-full p-1 hover:bg-gray-700"
-              >
-                <FaTimes size={20} />
-              </button>
-            </div>
-          )}
+
           <button
             type="submit"
             className="w-full py-3 mt-6 text-lg font-bold text-black bg-white rounded hover:bg-gray-200"
