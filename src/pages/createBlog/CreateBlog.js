@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/header";
 import { FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CreateBlog = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [imageSrc, setImageSrc] = useState(null);
@@ -23,11 +25,26 @@ const CreateBlog = () => {
   };
 
   const addImage = () => {};
+
+  const notify = () => {
+    toast.success("Blog Created Successfully!!", {
+      position: "top-center",
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    notify();
+  };
+
   return (
     <>
       <Header />
       <div className="flex items-center justify-center min-h-screen bg-black text-white p-5">
-        <form className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl"
+        >
           <label className="block mb-6">
             <span className="block text-5xl font-bold italic mb-2">Title</span>
             <input
@@ -83,6 +100,7 @@ const CreateBlog = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </>
   );
 };
