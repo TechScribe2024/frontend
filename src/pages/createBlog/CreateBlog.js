@@ -1,33 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "../../components/common/header/header";
-import { FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { Editor, createEditorState, ImageSideButton } from "medium-draft";
+import 'medium-draft/lib/index.css';
+import "./CreateBlog.css";
+
 const CreateBlog = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [imageSrc, setImageSrc] = useState(null);
-  useEffect(() => {
-    console.log("is authenticated,", isAuthenticated);
-  });
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageSrc(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const removeImage = () => {
-    setImageSrc(null);
+  const [editorState, setEditorState] = useState(() => createEditorState());
+
+  // Custom Side Button for Adding Images
+  // const ImageSideButton = (props) => {
+  //   let inputRef = useRef();
+
+  //   const onClick = () => {
+  //     inputRef.current.click();
+  //   };
+
+  //   const onFileChange = (e) => {
+  //     handleImageChange(e); // Handle image change without passing getEditorState/setEditorState
+  //   };
+
+  //   return (
+  //     <div>
+  //       <button
+  //         onClick={onClick}
+  //         className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+  //       >
+  //         +
+  //       </button>
+  //       <input
+  //         type="file"
+  //         accept="image/*"
+  //         style={{ display: 'none' }}
+  //         ref={inputRef}
+  //         onChange={onFileChange}
+  //       />
+  //     </div>
+  //   );
+  // };
+
+  // Editor side buttons (including custom image button)
+  const sideButtons = [{
+    title: 'Add Image',
+    component: ImageSideButton, // Register the custom image button
+  }];
+
+  // Handle content submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e)
+    // const rawContent = convertToRaw(editorState.getCurrentContent());
+    // console.log(rawContent); // Log the raw content for submission
   };
 
-  const addImage = () => {};
   return (
     <>
       <Header />
       <div className="flex items-center justify-center min-h-screen bg-black text-white p-5">
-        <form className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-black p-6 rounded-lg shadow-lg w-full max-w-5xl"
+        >
           <label className="block mb-6">
             <span className="block text-5xl font-bold italic mb-2">Title</span>
             <input
@@ -36,51 +68,28 @@ const CreateBlog = () => {
               placeholder="Enter your title here"
             />
           </label>
+
           <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2 ">Content</span>
+            <span className="block text-xl font-bold mb-2">Content</span>
             <div className="relative">
-              {/* <div className="absolute top-0 left-0 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-black">
-                <h1 className="text-xl text-white" onClick={addImage}>
-                  +
-                </h1>
-              </div> */}
-              <textarea
-                className="w-full p-8 border border-white rounded bg-black text-white placeholder-gray-400"
-                placeholder="Enter your content here..."
-                style={{ height: "60vh", padding: "5%", paddingTop: "50px" }} // Adjust padding to avoid overlap
-              />
+              <div className="editor-container">
+                <Editor
+                  editorState={editorState}
+                  onChange={setEditorState}
+                  placeholder="Enter your content here..."
+                  sideButtons={sideButtons}
+                />
+              </div>
             </div>
           </label>
-          <label className="block mb-6">
-            <span className="block text-xl font-bold mb-2">Add Image</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-full text-white"
-              onChange={handleImageChange}
-            />
-          </label>
-          {imageSrc && ( // Render the image if imageSrc is not null
-            <div className="mb-6 h-[100px]">
-              <img
-                src={imageSrc}
-                alt="Uploaded Preview"
-                className="h-[100px] w-[100px]  rounded-md shadow-md"
-              />
-              <button
-                onClick={removeImage} // Call removeImage to remove the image
-                // className="absolute top-2 right-2 rounded-full p-1 hover:bg-gray-700"
-              >
-                <FaTimes size={20} />
-              </button>
-            </div>
-          )}
+          <div className="flex justify-center">
           <button
             type="submit"
-            className="w-full py-3 mt-6 text-lg font-bold text-black bg-white rounded hover:bg-gray-200"
+            className="w-64 py-3 mt-6 text-lg font-bold text-black bg-white rounded hover:bg-gray-200"
           >
             Submit
           </button>
+          </div>
         </form>
       </div>
     </>
