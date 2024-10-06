@@ -1,8 +1,10 @@
 import React from "react";
 import BlogHeader from "../../blog/BlogHeader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
   const takeToHome = () => {

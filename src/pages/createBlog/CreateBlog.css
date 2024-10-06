@@ -32,10 +32,8 @@ font-style: italic;
 background-color: rgba(0, 0, 0, 0.9);
 }
 
-button {
+.editor-container .md-add-button {
 border: none;
-background-color: #444;
-color: white;
 font-size: 24px;
 padding: 8px 12px;
 border-radius: 50%;

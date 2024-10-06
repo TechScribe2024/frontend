@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import Header from "../../components/common/header/header";
 import front from "../../assets/front.jpg";
-
+import { useSelector } from "react-redux";
 const data = [
   {
     id: 1,
@@ -51,6 +51,7 @@ const data = [
 ];
 
 const Home = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const controls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -62,6 +63,10 @@ const Home = () => {
       controls.start("visible");
     }
   }, [controls, inView]);
+
+  useEffect(() => {
+    console.log("IS AUTHENTICATED", isAuthenticated);
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -119,7 +124,7 @@ const Home = () => {
             </motion.p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/createBlog"
+                to={isAuthenticated ? "/createBlog" : "#"}
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg hover:shadow-xl transition duration-300"
               >
                 Start Blogging

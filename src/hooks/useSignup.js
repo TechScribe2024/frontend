@@ -18,6 +18,10 @@ const useSignup = () => {
 
       if (response.status === 201) {
         console.log("Signup successful", response.data);
+        localStorage.setItem("user", JSON.stringify({ name, email }));
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+        }
         navigate("/login");
       }
     } catch (error) {
