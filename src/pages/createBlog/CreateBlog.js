@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import Header from "../../components/common/header/header";
-import { Editor, createEditorState, ImageSideButton } from "medium-draft";
-import 'medium-draft/lib/index.css';
-import "./CreateBlog.css";
+
+import { FaTimes } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateBlog = () => {
   const [editorState, setEditorState] = useState(() => createEditorState());
@@ -52,6 +54,19 @@ const CreateBlog = () => {
     // console.log(rawContent); // Log the raw content for submission
   };
 
+  const addImage = () => {};
+
+  const notify = () => {
+    toast.success("Blog Created Successfully!!", {
+      position: "top-center",
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    notify();
+  };
+
   return (
     <>
       <Header />
@@ -92,6 +107,7 @@ const CreateBlog = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </>
   );
 };
