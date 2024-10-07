@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/common/header/header";
 import useLogin from "../../hooks/useLogin";
+import useSanitize from "../../hooks/useSanitize";
 
 const Login = () => {
   const { email, setEmail, password, setPassword, callLogin } = useLogin();
@@ -9,6 +10,9 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const sanitizedEmail = useSanitize(email);
+  const sanitizedPassword = useSanitize(password);
 
   const validateForm = () => {
     let isValid = true;
@@ -18,18 +22,18 @@ const Login = () => {
     };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) {
+    if (!sanitizedEmail) {
       newErrors.email = "Email is required";
       isValid = false;
-    } else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(sanitizedEmail)) {
       newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
 
-    if (!password) {
+    if (!sanitizedPassword) {
       newErrors.password = "Password is required";
       isValid = false;
-    } else if (password.length < 8) {
+    } else if (sanitizedPassword.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
@@ -42,7 +46,8 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await callLogin(email, password);
+        console.log("sanitized", sanitizedEmail, sanitizedPassword)
+        await callLogin(sanitizedEmail, sanitizedPassword);
       } catch (error) {
         console.error('Login error:', error);
       }
