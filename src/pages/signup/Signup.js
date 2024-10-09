@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/common/header/header";
 import useSignup from "../../hooks/useSignup";
+import useSanitize from "../../hooks/useSanitize";
 
 const Signup = () => {
   const { name, setName, email, setEmail, password, setPassword, callSignup } =
@@ -11,6 +12,9 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const sanitizedEmail = useSanitize(email)
+  const sanitizedPassword = useSanitize(password)
+  const sanitizedName = useSanitize(name)
   const [passwordStrength, setPasswordStrength] = useState({
     length: false,
     uppercase: false,
@@ -22,16 +26,16 @@ const Signup = () => {
   useEffect(() => {
     const checkPasswordStrength = () => {
       setPasswordStrength({
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /[0-9]/.test(password),
-        special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        length: sanitizedPassword.length >= 8,
+        uppercase: /[A-Z]/.test(sanitizedPassword),
+        lowercase: /[a-z]/.test(sanitizedPassword),
+        number: /[0-9]/.test(sanitizedPassword),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(sanitizedPassword),
       });
     };
 
     checkPasswordStrength();
-  }, [password]);
+  }, [sanitizedPassword]);
 
   const validateForm = () => {
     let isValid = true;
@@ -42,20 +46,20 @@ const Signup = () => {
     };
 
     // Name validation
-    if (!name.trim()) {
+    if (!sanitizedName.trim()) {
       newErrors.name = "Username is required";
       isValid = false;
-    } else if (name.length < 3) {
+    } else if (sanitizedName.length < 3) {
       newErrors.name = "Username must be at least 3 characters";
       isValid = false;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) {
+    if (!sanitizedEmail) {
       newErrors.email = "Email is required";
       isValid = false;
-    } else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(sanitizedEmail)) {
       newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
@@ -63,7 +67,7 @@ const Signup = () => {
     // Password validation
     const passwordErrors = [];
 
-    if (!password) {
+    if (!sanitizedPassword) {
       passwordErrors.push("Password is required");
     } else {
       if (!passwordStrength.length) {
@@ -97,7 +101,7 @@ const Signup = () => {
     if (validateForm()) {
       try {
         // Pass name, email, and password directly to callSignup
-        await callSignup(name, email, password);
+        await callSignup(sanitizedName, sanitizedEmail, sanitizedPassword);
       } catch (error) {
         console.error('Signup error:', error);
       }
