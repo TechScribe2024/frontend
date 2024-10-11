@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import Header from "../../components/common/header/header";
 import { Editor, createEditorState, ImageSideButton } from "medium-draft";
-import 'medium-draft/lib/index.css';
+import "medium-draft/lib/index.css";
 import "./CreateBlog.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateBlog = () => {
   const [editorState, setEditorState] = useState(() => createEditorState());
@@ -39,17 +41,25 @@ const CreateBlog = () => {
   // };
 
   // Editor side buttons (including custom image button)
-  const sideButtons = [{
-    title: 'Add Image',
-    component: ImageSideButton, // Register the custom image button
-  }];
+  const sideButtons = [
+    {
+      title: "Add Image",
+      component: ImageSideButton, // Register the custom image button
+    },
+  ];
 
   // Handle content submission
+  const notify = () => {
+    toast.success("Blog Created Successfully!!", {
+      position: "top-center",
+    });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
+    console.log(e);
     // const rawContent = convertToRaw(editorState.getCurrentContent());
     // console.log(rawContent); // Log the raw content for submission
+    notify();
   };
 
   return (
@@ -83,15 +93,16 @@ const CreateBlog = () => {
             </div>
           </label>
           <div className="flex justify-center">
-          <button
-            type="submit"
-            className="w-64 py-3 mt-6 text-lg font-bold text-black bg-white rounded hover:bg-gray-200"
-          >
-            Submit
-          </button>
+            <button
+              type="submit"
+              className="w-64 py-3 mt-6 text-lg font-bold text-black bg-white rounded hover:bg-gray-200"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>
+      <ToastContainer />
     </>
   );
 };
