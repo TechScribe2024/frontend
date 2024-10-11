@@ -117,6 +117,12 @@ const Signup = () => {
     return "bg-green-500";
   };
 
+  //close button
+  const handleClose = () => {
+    // Redirect to another page or perform any other action
+    window.location.href = '/home'; 
+  };
+
   // Rest of the component remains the same...
 
   return (
@@ -127,6 +133,12 @@ const Signup = () => {
           <h2 className="text-3xl font-bold text-center mb-6 text-black">
             Sign Up
           </h2>
+          <button 
+            onClick={handleClose} 
+            className="absolute top-4 right-4 text-black bg-gray-200 p-2 rounded-full"
+          >
+            X
+          </button>
           <form className="flex flex-col" onSubmit={handleSubmit}>
             {/* Rest of the form remains the same... */}
             <label htmlFor="username" className="text-black mb-2 font-semibold">
