@@ -54,6 +54,10 @@ const Login = () => {
     }
   };
 
+  const handleClose = () => {
+    window.location.href = '/home'; 
+  };
+
   return (
     <>
       <Header />
@@ -62,6 +66,12 @@ const Login = () => {
           <h2 className="text-3xl font-bold text-center mb-6 text-black">
             Login
           </h2>
+          <button 
+            onClick={handleClose} 
+            className="absolute top-4 right-4 text-black bg-gray-200 p-2 rounded-full"
+          >
+            X
+          </button>
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <label htmlFor="email" className="text-black mb-2 font-semibold">
               Email
